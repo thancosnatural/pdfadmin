@@ -17,6 +17,7 @@ const PdfUpload = () => {
   };
 
   const domain = 'https://pdfserver-h9aj.onrender.com/api/pdf'
+    // const domain = 'http://localhost:5000/api/pdf'
 
   const fetchAllFiles = async () => {
     try {
@@ -82,7 +83,7 @@ const PdfUpload = () => {
   };
 
   return (
-    <div className="max-w-3xl mx-auto mt-16 px-6 py-8 bg-white shadow-xl rounded-2xl border border-gray-200">
+    <div className="max-w-3xl mx-auto mt-16 px-6 py-8 bg-white shadow-xl rounded-2xl border border-gray-200 min-h-screen pt-30">
       <h2 className="text-3xl font-bold text-gray-800 mb-6 text-center">Upload Document</h2>
 
       <div className="mb-6">
