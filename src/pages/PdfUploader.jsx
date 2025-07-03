@@ -37,7 +37,7 @@ const PdfUpload = () => {
       setSuccessMessage("");
 
       const response = await axios.post(
-        "http://localhost:5000/api/pdf/upload",
+        "https://pdfserver-1.onrender.com/api/pdf/upload",
         formData,
         {
           headers: {
