@@ -16,9 +16,11 @@ const PdfUpload = () => {
     setErrorMsg('');
   };
 
+  const domain = 'https://pdfserver-h9aj.onrender.com/api/pdf'
+
   const fetchAllFiles = async () => {
     try {
-      const res = await fetch('http://localhost:5000/api/pdf');
+      const res = await fetch(domain);
       const result = await res.json();
       if (result.success) {
         setAllFiles(result.data);
@@ -45,7 +47,7 @@ const PdfUpload = () => {
       const base64 = reader.result;
 
       try {
-        const response = await fetch('http://localhost:5000/api/pdf/upload-s3', {
+        const response = await fetch(`${domain}/upload-s3`, {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
