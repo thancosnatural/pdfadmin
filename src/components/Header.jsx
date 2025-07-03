@@ -16,13 +16,11 @@ const Header = () => {
   const [lastScrollY, setLastScrollY] = useState(0);
   const [headerTranslateY, setHeaderTranslateY] = useState(0);
   const [showIntro, setShowIntro] = useState(true);
-  const [flavoursOpen, setFlavoursOpen] = useState(false);
-  const [mobileFlavoursOpen, setMobileFlavoursOpen] = useState(false);
 
   const navigate = useNavigate();
   const location = useLocation();
 
-  const introText = "Welcome to Thanc's Natural Ice Cream";
+  const introText = "Welcome to Thanco's Natural Quick Order List";
   const words = introText.split(" ");
 
   const toggleMenu = () => {
@@ -245,81 +243,7 @@ const Header = () => {
                       </motion.div>
                     ))}
 
-                    {/* Flavours + mobile dropdown */}
-                    <motion.div
-                      className="flex flex-col"
-                      initial={{ opacity: 0, y: 10 }}
-                      animate={{ opacity: 1, y: 0 }}
-                      transition={{ duration: 0.3 }}
-                    >
-                      <button
-                        onClick={() =>
-                          setMobileFlavoursOpen(!mobileFlavoursOpen)
-                        }
-                        className="flex justify-between items-center font-medium px-3 py-2 rounded transition hover:bg-yellow-100"
-                      >
-                        <span
-                          className={
-                            location.pathname.startsWith("/flavours")
-                              ? "text-yellow-500"
-                              : "text-black"
-                          }
-                        >
-                          Flavours
-                        </span>
-                        <motion.svg
-                          className="h-4 w-4 ml-2"
-                          fill="none"
-                          stroke="currentColor"
-                          viewBox="0 0 24 24"
-                          initial={false}
-                          animate={{
-                            rotate: mobileFlavoursOpen ? 180 : 0,
-                          }}
-                          transition={{ duration: 0.3 }}
-                        >
-                          <path
-                            strokeLinecap="round"
-                            strokeLinejoin="round"
-                            strokeWidth={2}
-                            d="M19 9l-7 7-7-7"
-                          />
-                        </motion.svg>
-                      </button>
-                      <AnimatePresence>
-                        {mobileFlavoursOpen && (
-                          <motion.div
-                            initial={{ height: 0, opacity: 0 }}
-                            animate={{ height: "auto", opacity: 1 }}
-                            exit={{ height: 0, opacity: 0 }}
-                            transition={{ duration: 0.3 }}
-                            className="ml-4 mt-2 flex flex-col space-y-2"
-                          >
-                            <Link
-                              to="/flavours"
-                              onClick={toggleMenu}
-                              className="text-black text-sm px-3 py-2 rounded transition hover:bg-yellow-100"
-                            >
-                              All Flavours
-                            </Link>
-                            <Link
-                              to="/flavours/sundaes"
-                              onClick={toggleMenu}
-                              className="text-black text-sm px-3 py-2 rounded transition hover:bg-yellow-100"
-                            >
-                              Sundaes
-                            </Link>
-                            <Link
-                              to="/flavours/stones"
-                              onClick={toggleMenu}
-                              className="text-black text-sm px-3 py-2 rounded transition hover:bg-yellow-100"
-                            >
-                              Stones
-                            </Link>
-                          </motion.div>
-                        )}
-                      </AnimatePresence>
-                    </motion.div>
+                 
                   </nav>
                 </motion.div>
               )}
