@@ -1,191 +1,169 @@
-import React, { useEffect, useState } from "react";
-import axios from "axios";
-import {
-  FaCloudUploadAlt,
-  FaSpinner,
-  FaCheckCircle,
-  FaExclamationCircle,
-  FaFilePdf,
-} from "react-icons/fa";
+import { useEffect, useState } from 'react';
+import { UploadCloud } from 'lucide-react';
 
 const PdfUpload = () => {
-  const [selectedFile, setSelectedFile] = useState(null);
-  const [uploadedFiles, setUploadedFiles] = useState([]);
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState("");
-  const [successMessage, setSuccessMessage] = useState("");
+  const [file, setFile] = useState(null);
+  const [description, setDescription] = useState('');
+  const [uploading, setUploading] = useState(false);
+  const [successMsg, setSuccessMsg] = useState('');
+  const [errorMsg, setErrorMsg] = useState('');
+  const [uploadedFile, setUploadedFile] = useState(null);
+  const [allFiles, setAllFiles] = useState([]);
 
-  const fetchPdfs = async () => {
+  const handleFileChange = (e) => {
+    setFile(e.target.files[0]);
+    setSuccessMsg('');
+    setErrorMsg('');
+  };
+
+  const fetchAllFiles = async () => {
     try {
-      setLoading(true);
-      const response = await axios.get(`https://pdfserver-1.onrender.com/api/pdf`);
-      const mapped = response.data.data.map((pdf) => ({
-        id: pdf.id,
-        title: pdf.filename,
-        description: pdf.description,
-        file_url: `https://pdfserver-1.onrender.com/api/pdf/download/${pdf.id}`,
-        updatedAt: pdf.createdAt,
-      }));
-      setUploadedFiles(mapped);
-    } catch (error) {
-      console.error("Error fetching PDFs:", error);
-    } finally {
-      setLoading(false);
+      const res = await fetch('http://localhost:5000/api/pdf');
+      const result = await res.json();
+      if (result.success) {
+        setAllFiles(result.data);
+      }
+    } catch (err) {
+      console.error('Error fetching files:', err);
     }
   };
 
   useEffect(() => {
-    fetchPdfs();
+    fetchAllFiles();
   }, []);
 
-  const handleFileChange = (e) => {
-    const file = e.target.files[0];
-    if (file && file.type !== "application/pdf") {
-      setError("Only PDF files are allowed.");
-      setSelectedFile(null);
-      setSuccessMessage("");
-    } else {
-      setError("");
-      setSuccessMessage("");
-      setSelectedFile(file);
-    }
-  };
-
   const handleUpload = async () => {
-    if (!selectedFile) {
-      setError("Please select a PDF file.");
-      return;
-    }
+    if (!file) return setErrorMsg('Please select a file.');
 
-    const formData = new FormData();
-    formData.append("pdf", selectedFile);
+    setUploading(true);
+    setErrorMsg('');
+    setSuccessMsg('');
 
-    try {
-      setLoading(true);
-      setError("");
-      setSuccessMessage("");
+    const reader = new FileReader();
 
-      const response = await axios.post(
-        "https://pdfserver-1.onrender.com/api/pdf/upload",
-        formData,
-        {
+    reader.onloadend = async () => {
+      const base64 = reader.result;
+
+      try {
+        const response = await fetch('http://localhost:5000/api/pdf/upload-s3', {
+          method: 'POST',
           headers: {
-            "Content-Type": "multipart/form-data",
+            'Content-Type': 'application/json',
           },
+          body: JSON.stringify({
+            fileName: file.name,
+            fileType: file.type,
+            base64Data: base64,
+            description,
+          }),
+        });
+
+        const result = await response.json();
+        if (result.success) {
+          setSuccessMsg('File uploaded successfully.');
+          setUploadedFile({ name: file.name, type: file.type, url: result.data?.url });
+          setFile(null);
+          setDescription('');
+          fetchAllFiles();
+        } else {
+          setErrorMsg(result.message || 'Upload failed.');
         }
-      );
+      } catch (error) {
+        console.error(error);
+        setErrorMsg('Upload failed.');
+      } finally {
+        setUploading(false);
+      }
+    };
 
-      setSuccessMessage("File uploaded successfully!");
-      setSelectedFile(null);
-
-      // Refresh the uploaded list
-      fetchPdfs();
-    } catch (err) {
-      console.error(err);
-      setError("Upload failed. Please try again.");
-    } finally {
-      setLoading(false);
-    }
+    reader.readAsDataURL(file);
   };
 
   return (
-    <div className="max-w-xl mx-auto mt-12 p-8 bg-white rounded-2xl shadow-xl min-h-screen pt-30 md:pt-40">
-      <h2 className="text-3xl font-bold text-gray-800 mb-6 flex items-center gap-2">
-        <FaCloudUploadAlt className="text-blue-600" />
-        Upload PDF File
-      </h2>
+    <div className="max-w-3xl mx-auto mt-16 px-6 py-8 bg-white shadow-xl rounded-2xl border border-gray-200">
+      <h2 className="text-3xl font-bold text-gray-800 mb-6 text-center">Upload Document</h2>
 
-      {/* Upload Dropzone */}
-      <div className="flex justify-center">
-        <label
-          htmlFor="pdf-upload"
-          className={`cursor-pointer border-2 border-dashed border-gray-300 w-full p-8 flex flex-col items-center justify-center rounded-xl text-center hover:border-blue-500 transition-all duration-300 ${
-            selectedFile ? "border-green-500 bg-green-50" : ""
-          }`}
-        >
-          {selectedFile ? (
-            <div className="flex items-center gap-2 text-green-700">
-              <FaFilePdf className="text-red-600 text-3xl" />
-              <span className="text-md">{selectedFile.name}</span>
-            </div>
-          ) : (
-            <>
-              <FaCloudUploadAlt className="text-blue-500 text-5xl mb-3" />
-              <p className="text-gray-500">Drag and drop a PDF file here, or click to browse</p>
-            </>
-          )}
+      <div className="mb-6">
+        <label className="block text-gray-700 font-semibold mb-2">File</label>
+        <div className="flex items-center justify-center border-2 border-dashed border-blue-400 rounded-lg px-4 py-10 cursor-pointer bg-blue-50 hover:bg-blue-100 transition">
           <input
-            id="pdf-upload"
             type="file"
-            accept="application/pdf"
+            accept=".pdf,.doc,.docx,.xls,.xlsx,image/*"
             onChange={handleFileChange}
             className="hidden"
+            id="fileUpload"
           />
-        </label>
+          <label htmlFor="fileUpload" className="flex flex-col items-center justify-center cursor-pointer">
+            <UploadCloud size={40} className="text-blue-500 mb-2" />
+            <span className="text-gray-600">{file ? file.name : 'Click to upload or drag & drop your file'}</span>
+          </label>
+        </div>
       </div>
 
-      {/* Error / Success Messages */}
-      {error && (
-        <div className="mt-4 flex items-center gap-2 text-red-600 text-sm">
-          <FaExclamationCircle />
-          {error}
-        </div>
-      )}
+      <div className="mb-6">
+        <label className="block text-gray-700 font-semibold mb-2">Description (optional)</label>
+        <input
+          type="text"
+          value={description}
+          onChange={(e) => setDescription(e.target.value)}
+          placeholder="Enter a short description..."
+          className="w-full border border-gray-300 p-3 rounded-lg shadow-sm focus:ring-2 focus:ring-blue-200"
+        />
+      </div>
 
-      {successMessage && (
-        <div className="mt-4 flex items-center gap-2 text-green-600 text-sm">
-          <FaCheckCircle />
-          {successMessage}
-        </div>
-      )}
+      {errorMsg && <p className="text-red-600 text-sm mb-4">{errorMsg}</p>}
+      {successMsg && <p className="text-green-600 text-sm mb-4">{successMsg}</p>}
 
-      {/* Upload Button */}
       <button
         onClick={handleUpload}
-        disabled={loading || !selectedFile}
-        className="mt-6 w-full flex items-center justify-center gap-2 py-3 rounded-md bg-gradient-to-r from-blue-600 to-blue-500 text-white font-semibold hover:from-blue-700 hover:to-blue-600 transition-all disabled:opacity-50"
+        disabled={uploading}
+        className="w-full flex items-center justify-center bg-blue-600 hover:bg-blue-700 text-white py-3 px-6 rounded-lg font-semibold shadow-lg transition disabled:opacity-50"
       >
-        {loading ? (
+        {uploading ? 'Uploading...' : (
           <>
-            <FaSpinner className="animate-spin" /> Uploading...
-          </>
-        ) : (
-          <>
-            <FaCloudUploadAlt />
-            Upload PDF
+            <UploadCloud className="mr-2" size={20} /> Upload File
           </>
         )}
       </button>
 
-      <hr className="my-8 border-gray-200" />
+      {uploadedFile && (
+        <div className="mt-8 border-t pt-6">
+          <h3 className="text-xl font-semibold text-gray-800 mb-2">Uploaded File Details</h3>
+          <p><strong>Name:</strong> {uploadedFile.name}</p>
+          <p><strong>Type:</strong> {uploadedFile.type}</p>
+          {uploadedFile.url && (
+            <p>
+              <strong>Preview:</strong> <a href={uploadedFile.url} target="_blank" rel="noopener noreferrer" className="text-blue-600 underline">View File</a>
+            </p>
+          )}
+        </div>
+      )}
 
-      {/* Uploaded Files */}
-      <h3 className="text-xl font-semibold text-gray-700 mb-4 flex items-center gap-2">
-        <FaFilePdf className="text-red-600" />
-        Uploaded PDFs
-      </h3>
+      {allFiles.length > 0 && (
+        <div className="mt-10 border-t pt-6">
+          <h3 className="text-xl font-bold text-gray-800 mb-4">All Uploaded Files</h3>
+          <ul className="space-y-3">
+            {allFiles.map((file) => (
+              <li key={file.id} className="flex justify-between items-center border p-4 rounded-md shadow-sm">
+                <div>
+                  <p className="font-medium text-gray-800">{file.filename}</p>
+                  {file.description && <p className="text-sm text-gray-600">{file.description}</p>}
+                </div>
+                <a
+                  href={file.filepath}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-block bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-600 transition text-sm font-medium"
+                >
+                  View
+                </a>
 
-      {uploadedFiles.length === 0 ? (
-        <p className="text-gray-500 text-sm">No files uploaded yet.</p>
-      ) : (
-        <ul className="space-y-2">
-          {uploadedFiles.map((file) => (
-            <li
-              key={file.id}
-              className="flex items-center justify-between border border-gray-200 rounded-md px-4 py-3 hover:bg-gray-50 transition"
-            >
-              <span className="text-gray-800 text-sm truncate">{file.title}</span>
-              <a
-                href={file.file_url}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="text-blue-600 hover:underline text-sm font-medium"
-              >
-                View / Download
-              </a>
-            </li>
-          ))}
-        </ul>
+           
+
+              </li>
+            ))}
+          </ul>
+        </div>
       )}
     </div>
   );

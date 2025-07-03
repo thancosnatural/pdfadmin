@@ -7,10 +7,7 @@ const Logo =
 
 const navLinks = [
   { label: "Home", path: "/" },
-  { label: "About", path: "/about" },
-  { label: "Franchisee", path: "/franchise-enquiry" },
-  { label: "Stores", path: "/our-stores" },
-  { label: "Gallery", path: "/outlet-gallery" },
+
 ];
 
 const Header = () => {
@@ -120,23 +117,8 @@ const Header = () => {
           animate={{ y: 0, opacity: 1 }}
           transition={{ duration: 0.8, ease: "easeOut" }}
         >
-          {/* Top bar desktop */}
-          <motion.div
-            className="hidden md:block bg-black text-yellow-400 text-sm text-center py-1"
-            animate={{ y: showTopBar ? 0 : -32, opacity: showTopBar ? 1 : 0 }}
-            transition={{ type: "spring", stiffness: 120, damping: 20 }}
-          >
-            📞 +91-9916502035 &nbsp; | &nbsp; ✉️ support@thancosnatural.com
-          </motion.div>
 
-          {/* Top bar mobile */}
-          <motion.div
-            className="md:hidden bg-black text-yellow-400 text-sm text-center py-2"
-            animate={{ y: showTopBar ? 0 : -32, opacity: showTopBar ? 1 : 0 }}
-            transition={{ type: "spring", stiffness: 120, damping: 20 }}
-          >
-            📞 +91-9916502035
-          </motion.div>
+
 
           <motion.header
             className="w-full backdrop-blur bg-white/40 shadow"
@@ -188,64 +170,7 @@ const Header = () => {
                     </motion.div>
                   ))}
 
-                  {/* Flavours link + dropdown */}
-                  <motion.div
-                    className="relative"
-                    onMouseEnter={() => setFlavoursOpen(true)}
-                    onMouseLeave={() => setFlavoursOpen(false)}
-                  >
-                    <Link
-                      to="/flavours"
-                      className={`flex items-center text-[18px] font-semibold transition duration-300 ${
-                        location.pathname.startsWith("/flavours")
-                          ? "text-yellow-500"
-                          : "text-black hover:text-yellow-500"
-                      }`}
-                    >
-                      Flavours
-                      <motion.svg
-                        className="ml-2 h-4 w-4"
-                        fill="none"
-                        stroke="currentColor"
-                        viewBox="0 0 24 24"
-                        initial={false}
-                        animate={{ rotate: flavoursOpen ? 180 : 0 }}
-                        transition={{ duration: 0.3 }}
-                      >
-                        <path
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                          strokeWidth={2}
-                          d="M19 9l-7 7-7-7"
-                        />
-                      </motion.svg>
-                    </Link>
-
-                    <AnimatePresence>
-                      {flavoursOpen && (
-                        <motion.div
-                          initial={{ opacity: 0, y: 10 }}
-                          animate={{ opacity: 1, y: 0 }}
-                          exit={{ opacity: 0, y: 10 }}
-                          transition={{ duration: 0.3 }}
-                          className="absolute top-full left-0 mt-2 w-48 bg-white rounded shadow-lg overflow-hidden z-50"
-                        >
-                          <Link
-                            to="/flavours/sundaes"
-                            className="block px-4 py-2 text-sm text-gray-800 hover:bg-yellow-100"
-                          >
-                            Sundaes
-                          </Link>
-                          <Link
-                            to="/flavours/stones"
-                            className="block px-4 py-2 text-sm text-gray-800 hover:bg-yellow-100"
-                          >
-                            Stones
-                          </Link>
-                        </motion.div>
-                      )}
-                    </AnimatePresence>
-                  </motion.div>
+            
                 </nav>
 
                 {/* Hamburger menu for mobile */}
