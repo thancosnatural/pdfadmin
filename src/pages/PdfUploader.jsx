@@ -94,8 +94,6 @@ const PdfUpload = () => {
         <div className='w-full md:w-4xl flex flex-col items-center '>
              <img src={uploadimage} className='hidden md:block w-70 text-center' />
           <div className="mb-6 w-full">
-         
-
             <label className="block text-gray-700 font-semibold mb-2">File</label>
             <div className="flex items-center justify-center border-2 border-dashed border-green-400 rounded-lg px-4 py-10 cursor-pointer bg-green-50 hover:bg-green-100 transition">
               <input
@@ -137,7 +135,6 @@ const PdfUpload = () => {
               </>
             )}
           </button>
-
         </div>
       </div>
       {uploadedFile && (
@@ -172,9 +169,6 @@ const PdfUpload = () => {
                   >
                     View
                   </a>
-
-
-
                 </li>
               ))}
             </ul>
