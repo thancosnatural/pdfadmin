@@ -84,7 +84,7 @@ const PdfUpload = () => {
   };
 
   return (
-    <div className="w-full mx-auto mt-16 px-4 md:px-6 py-8 bg-white min-h-screen md:pt-10">
+    <div className="max-w-7xl mx-auto mt-16 px-4 md:px-6 py-8 bg-white min-h-screen md:pt-10">
       <div className='flex items-center gap-4 mb-4'>
         <UploadCloud size={30} />
         <h2 className="text-lg md:text-3xl font-bold text-gray-800 ">Upload Document</h2>
