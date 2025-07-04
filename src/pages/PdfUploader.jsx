@@ -97,7 +97,7 @@ const PdfUpload = () => {
          
 
             <label className="block text-gray-700 font-semibold mb-2">File</label>
-            <div className="flex items-center justify-center border-2 border-dashed border-blue-400 rounded-lg px-4 py-10 cursor-pointer bg-blue-50 hover:bg-blue-100 transition">
+            <div className="flex items-center justify-center border-2 border-dashed border-green-400 rounded-lg px-4 py-10 cursor-pointer bg-green-50 hover:bg-green-100 transition">
               <input
                 type="file"
                 accept=".pdf,.doc,.docx,.xls,.xlsx,image/*"
@@ -106,7 +106,7 @@ const PdfUpload = () => {
                 id="fileUpload"
               />
               <label htmlFor="fileUpload" className="flex flex-col items-center justify-center cursor-pointer">
-                <UploadCloud size={40} className="text-blue-500 mb-2" />
+                <UploadCloud size={40} className="text-green-500 mb-2" />
                 <span className="text-gray-600">{file ? file.name : 'Click to upload or drag & drop your file'}</span>
               </label>
             </div>
@@ -119,7 +119,7 @@ const PdfUpload = () => {
               value={description}
               onChange={(e) => setDescription(e.target.value)}
               placeholder="Enter a short description..."
-              className="w-full border border-gray-300 p-3 rounded-lg shadow-sm focus:ring-2 focus:ring-blue-200"
+              className="w-full border border-gray-300 p-3 rounded-lg shadow-sm focus:ring-2 focus:ring-green-200"
             />
           </div>
 
@@ -129,7 +129,7 @@ const PdfUpload = () => {
           <button
             onClick={handleUpload}
             disabled={uploading}
-            className="w-full flex items-center justify-center bg-blue-600 hover:bg-blue-700 text-white py-3 px-6 rounded-lg font-semibold shadow-lg transition disabled:opacity-50"
+            className="w-full flex items-center justify-center bg-green-600 hover:bg-green-700 text-white py-3 px-6 rounded-lg font-semibold shadow-lg transition disabled:opacity-50"
           >
             {uploading ? 'Uploading...' : (
               <>
@@ -147,7 +147,7 @@ const PdfUpload = () => {
           <p><strong>Type:</strong> {uploadedFile.type}</p>
           {uploadedFile.url && (
             <p>
-              <strong>Preview:</strong> <a href={uploadedFile.url} target="_blank" rel="noopener noreferrer" className="text-blue-600 underline">View File</a>
+              <strong>Preview:</strong> <a href={uploadedFile.url} target="_blank" rel="noopener noreferrer" className="text-green-600 underline">View File</a>
             </p>
           )}
         </div>
@@ -168,7 +168,7 @@ const PdfUpload = () => {
                     href={file.filepath}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="inline-block bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-600 transition text-sm font-medium"
+                    className="inline-block bg-green-500 text-white px-4 py-2 rounded-md hover:bg-green-600 transition text-sm font-medium"
                   >
                     View
                   </a>
