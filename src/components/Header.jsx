@@ -9,6 +9,37 @@ const navLinks = [
   // Add more nav items here if needed
 ];
 
+// ✅ Sprinkle component → gold star particle
+const Sprinkle = ({ x, y, delay, size, rotate, opacity }) => (
+  <motion.svg
+    initial={{ scale: 0, opacity: 0, rotate: 0 }}
+    animate={{
+      scale: [0, 1, 0],
+      opacity: [0, opacity, 0],
+      rotate: [0, rotate, rotate * 2]
+    }}
+    transition={{
+      duration: 2,
+      delay,
+      ease: "easeOut"
+    }}
+    style={{
+      position: "absolute",
+      top: `${y}%`,
+      left: `${x}%`,
+      width: `${size}px`,
+      height: `${size}px`,
+      pointerEvents: "none",
+      overflow: "visible",
+      filter: "drop-shadow(0 0 6px gold)",
+    }}
+    viewBox="0 0 24 24"
+    fill="gold"
+  >
+    <polygon points="12,2 15,9 22,9 16.5,13.5 18.5,21 12,17 5.5,21 7.5,13.5 2,9 9,9" />
+  </motion.svg>
+);
+
 const Header = () => {
   const [menuOpen, setMenuOpen] = useState(false);
   const [showIntro, setShowIntro] = useState(true);
@@ -42,20 +73,37 @@ const Header = () => {
             exit={{ opacity: 0 }}
             transition={{ duration: 1, ease: "easeInOut" }}
           >
-            <motion.img
-              src={Logo}
-              alt="Thancos Natural Logo"
-              layoutId="logo"
-              initial={{ scale: 3, opacity: 1 }}
-              animate={{ scale: 1, opacity: 1 }}
-              exit={{ opacity: 0 }}
-              transition={{
-                duration: 1,
-                ease: [0.17, 0.67, 0.83, 0.67],
-              }}
-              className="w-32 h-auto md:w-48"
-            />
+            {/* Sprinkle particles container */}
+            <div className="relative w-32 h-32 md:w-50 md:h-50 flex items-center justify-center">
+              {Array.from({ length: 300 }).map((_, i) => (
+                <Sprinkle
+                  key={i}
+                  x={Math.random() * 100}
+                  y={Math.random() * 100}
+                  delay={Math.random() * 1.5}
+                  size={4 + Math.random() * 20}
+                  rotate={90 + Math.random() * 270}
+                  opacity={0.4 + Math.random() * 0.6}
+                />
+              ))}
 
+              {/* Logo image */}
+              <motion.img
+                src={Logo}
+                alt="Thancos Natural Logo"
+                layoutId="logo"
+                initial={{ scale: 3, opacity: 1 }}
+                animate={{ scale: 1, opacity: 1 }}
+                exit={{ opacity: 0 }}
+                transition={{
+                  duration: 1,
+                  ease: [0.17, 0.67, 0.83, 0.67],
+                }}
+                className="w-32 h-auto md:w-48 relative z-10"
+              />
+            </div>
+
+            {/* Animated intro text */}
             <motion.div
               className="mt-6 flex flex-wrap justify-center text-center"
               initial="hidden"
