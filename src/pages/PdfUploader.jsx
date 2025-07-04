@@ -107,7 +107,7 @@ const PdfUpload = () => {
               />
               <label htmlFor="fileUpload" className="flex flex-col items-center justify-center cursor-pointer">
                 <UploadCloud size={40} className="text-green-500 mb-2" />
-                <span className="text-gray-600 text-center">{file ? file.name : 'Click to upload or drag & drop your file'}</span>
+                <span className="text-sm md:text-mdtext-gray-600 text-center">{file ? file.name : 'Click to upload or drag & drop your file'}</span>
               </label>
             </div>
           </div>
