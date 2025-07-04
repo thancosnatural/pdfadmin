@@ -1,8 +1,7 @@
-import React from 'react';
-import { Facebook, Instagram, Twitter, Mail, Phone, MapPin, Leaf } from 'lucide-react';
+import { Mail, Phone, MapPin, Leaf, Facebook, Instagram } from 'lucide-react';
 import { Link } from 'react-router-dom';
 
-const Logo = 'https://thancos.s3.ap-southeast-2.amazonaws.com/logo.png';
+import Logo from '../assets/Images/Greenlogo.png'
 
 export default function Footer() {
   return (
@@ -17,26 +16,27 @@ export default function Footer() {
           <p className="text-gray-300 text-sm">
             Freshly scooped natural ice cream—crafted with passion, flavor, and honesty.
           </p>
-          <p className="flex items-center gap-1 text-yellow-400 text-xs font-semibold">
+          <p className="flex items-center gap-1 text-green-400 text-xs font-semibold">
             <Leaf size={16} /> 100% Natural • No Preservatives
           </p>
         </div>
 
         {/* Quick Links */}
-        <div>
-          <h3 className="text-yellow-400 font-semibold mb-4">Explore</h3>
-          <ul className="space-y-2 text-gray-300 text-sm">
-            <li><Link to="/about" className="hover:text-white">About Us</Link></li>
-            <li><Link to="/flavors" className="hover:text-white">Our Flavors</Link></li>
-            <li><Link to="/stores" className="hover:text-white">Find a Scoop</Link></li>
-            <li><Link to="/careers" className="hover:text-white">Careers</Link></li>
-            <li><Link to="/contact" className="hover:text-white">Contact Us</Link></li>
-          </ul>
-        </div>
+       <div>
+  <h3 className="text-green-400 font-semibold mb-4">Explore</h3>
+  <ul className="space-y-2 text-gray-300 text-sm">
+    <li><a href="https://www.thancosnatural.com/about-us/" target="_blank" rel="noopener noreferrer" className="hover:text-white">About Us</a></li>
+    <li><a href="https://www.thancosnatural.com/flavours/" target="_blank" rel="noopener noreferrer" className="hover:text-white">Our Flavors</a></li>
+    <li><a href="https://www.thancosnatural.com/stores/" target="_blank" rel="noopener noreferrer" className="hover:text-white">Stores</a></li>
+    <li><a href="https://www.thancosnatural.com/franchisee/" target="_blank" rel="noopener noreferrer" className="hover:text-white">Franchisee</a></li>
+    <li><a href="https://www.thancosnatural.com/find-us/" target="_blank" rel="noopener noreferrer" className="hover:text-white">Contact Us</a></li>
+  </ul>
+</div>
+
 
         {/* Contact Info */}
         <div>
-          <h3 className="text-yellow-400 font-semibold mb-4">Contact</h3>
+          <h3 className="text-green-400 font-semibold mb-4">Contact</h3>
           <ul className="space-y-3 text-gray-300 text-sm">
             <li className="flex items-start gap-2"><Phone size={16} /> +91-9916502035</li>
             <li className="flex items-start gap-2"><Mail size={16} /> support@thancosnatural.com</li>
@@ -46,10 +46,10 @@ export default function Footer() {
 
         {/* Social & Subscribe */}
         <div>
-          <h3 className="text-yellow-400 font-semibold mb-4">Follow & Subscribe</h3>
+          <h3 className="text-green-400 font-semibold mb-4">Follow & Subscribe</h3>
           <p className="text-gray-300 mb-4 text-sm">Connect with us for updates & stories</p>
 
-          <div className="flex space-x-4 mb-6 text-yellow-400">
+          <div className="flex space-x-4 mb-6 text-green-400">
             <a href="https://www.facebook.com/share/1Fuva3pdMv/" aria-label="Facebook"><Facebook className="hover:text-white" size={20} /></a>
             <a href="https://www.instagram.com/thancos_natural_official/?igsh=dW9nbmtzYXR6NTh2" aria-label="Instagram"><Instagram className="hover:text-white" size={20} /></a>
           </div>
@@ -60,7 +60,7 @@ export default function Footer() {
               placeholder="Your email"
               className="px-3 py-2 flex-1 rounded bg-gray-800 placeholder-gray-500 text-white focus:outline-none"
             />
-            <button type="submit" className="px-4 py-2 bg-yellow-400 text-black rounded font-semibold hover:bg-yellow-500 transition">
+            <button type="submit" className="px-4 py-2 bg-green-400 text-black rounded font-semibold hover:bg-green-500 transition">
               Subscribe
             </button>
           </form>

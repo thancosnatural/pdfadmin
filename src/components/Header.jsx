@@ -1,26 +1,22 @@
 import { useState, useEffect } from "react";
 import { Link, useNavigate, useLocation } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
-
-const Logo =
-  "https://thancos.s3.ap-southeast-2.amazonaws.com/logo.png";
+import Logo from '../assets/Images/Greenlogo.png';
+import { IoHomeOutline } from "react-icons/io5";
 
 const navLinks = [
-  { label: "Home", path: "/" },
-
+  { label: <IoHomeOutline size={25} />, path: "/" },
+  // Add more nav items here if needed
 ];
 
 const Header = () => {
   const [menuOpen, setMenuOpen] = useState(false);
-  const [showTopBar, setShowTopBar] = useState(true);
-  const [lastScrollY, setLastScrollY] = useState(0);
-  const [headerTranslateY, setHeaderTranslateY] = useState(0);
   const [showIntro, setShowIntro] = useState(true);
 
   const navigate = useNavigate();
   const location = useLocation();
 
-  const introText = "Welcome to Thanco's Natural Quick Order List";
+  const introText = "Quick Order List";
   const words = introText.split(" ");
 
   const toggleMenu = () => {
@@ -34,22 +30,6 @@ const Header = () => {
     return () => clearTimeout(timer);
   }, []);
 
-  useEffect(() => {
-    const handleScroll = () => {
-      const currentScrollY = window.scrollY;
-      if (currentScrollY < lastScrollY) {
-        setShowTopBar(true);
-        setHeaderTranslateY(0);
-      } else {
-        setShowTopBar(false);
-        setHeaderTranslateY(-32);
-      }
-      setLastScrollY(currentScrollY);
-    };
-    window.addEventListener("scroll", handleScroll);
-    return () => window.removeEventListener("scroll", handleScroll);
-  }, [lastScrollY]);
-
   return (
     <>
       {/* Intro overlay */}
@@ -62,7 +42,6 @@ const Header = () => {
             exit={{ opacity: 0 }}
             transition={{ duration: 1, ease: "easeInOut" }}
           >
-            {/* Logo animation */}
             <motion.img
               src={Logo}
               alt="Thancos Natural Logo"
@@ -77,7 +56,6 @@ const Header = () => {
               className="w-32 h-auto md:w-48"
             />
 
-            {/* Animated intro text */}
             <motion.div
               className="mt-6 flex flex-wrap justify-center text-center"
               initial="hidden"
@@ -115,14 +93,7 @@ const Header = () => {
           animate={{ y: 0, opacity: 1 }}
           transition={{ duration: 0.8, ease: "easeOut" }}
         >
-
-
-
-          <motion.header
-            className="w-full backdrop-blur bg-white/40 shadow"
-            animate={{ y: headerTranslateY }}
-            transition={{ type: "spring", stiffness: 120, damping: 20 }}
-          >
+          <motion.header className="w-full backdrop-blur bg-white/40 shadow">
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
               <div className="flex justify-between items-center h-16 md:h-20">
                 {/* Logo */}
@@ -136,7 +107,7 @@ const Header = () => {
                       src={Logo}
                       alt="Thancos Natural Logo"
                       layoutId="logo"
-                      className="w-full h-auto object-contain"
+                      className="w-12 md:w-16 h-auto object-contain"
                     />
                   </Link>
                 </motion.div>
@@ -159,7 +130,7 @@ const Header = () => {
                         to={nav.path}
                         className={`text-[18px] font-semibold transition duration-300 ${
                           location.pathname === nav.path
-                            ? "text-yellow-500"
+                            ? "text-gray-500"
                             : "text-black hover:text-yellow-500"
                         }`}
                       >
@@ -167,8 +138,6 @@ const Header = () => {
                       </Link>
                     </motion.div>
                   ))}
-
-            
                 </nav>
 
                 {/* Hamburger menu for mobile */}
@@ -242,8 +211,6 @@ const Header = () => {
                         </Link>
                       </motion.div>
                     ))}
-
-                 
                   </nav>
                 </motion.div>
               )}
