@@ -17,7 +17,7 @@ const PdfUpload = () => {
     setErrorMsg('');
   };
 
-  const domain = 'https://pdfserver-h9aj.onrender.com/api/pdf'
+  const domain = 'https://api.quickorder.thancosnatural.com/api/pdf'
   // const domain = 'http://localhost:5000/api/pdf'
 
   const fetchAllFiles = async () => {
